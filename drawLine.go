@@ -1,4 +1,6 @@
 // Creates multiple lines
+// Reference: http://www.pheelicks.com/2013/11/intro-to-images-in-go-fractals/
+
 package main
 
 // Import packages
