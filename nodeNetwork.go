@@ -22,7 +22,7 @@ type Node struct {
 func (n *Node) Listen() {
 	// Listen for incoming connection on channel
 	for {
-		peer := <- n.Ch
+		peer := <-n.Ch
 		peer.Power -= 5
 		n.Power = peer.Power
 		n.Canvas.DrawLine(color.RGBA{255, n.Power, 0, 255}, n.Position, peer.Position)
@@ -43,22 +43,22 @@ func (n *Node) Send() {
 	}
 }
 
-func NewNode(peers uint32, canvas Canvas) {
+func NewNode(peers uint32, canvas *Canvas) *Node {
 	n := new(Node)
 	size := canvas.Bounds().Size()
-	n.Position := Coordinate{size.X*rand.Float64(), size.Y*rand.Float64()}
-	n.Ch := make(chan *Node)
+	n.Position = Coordinate{float64(size.X) * rand.Float64(), float64(size.Y) * rand.Float64()}
+	n.Ch = make(chan *Node)
 	n.Peers = make([]*Node, 0, peers)
-	n.Canvas := canvas
-	n.Power := 0
+	n.Canvas = canvas
+	n.Power = 0
 	go n.Listen()
 	return n
 }
 
-func initialize(totalNodes uint32, peers uint32, canvas Canvas) {
-	nodes = make([]*Node, totalNodes)
+func initialize(totalNodes uint32, peers uint32, canvas *Canvas) {
+	nodes := make([]*Node, totalNodes)
 
-	for i:=0; i<totalNodes; i++ {
+	for i := uint32(0); i < totalNodes; i++ {
 		nodes[i] = NewNode(peers, canvas)
 	}
 }
